@@ -2019,16 +2019,27 @@ footer {
     }
 
 }
-/* MOBILE SERVICE CARD FLIP FIX */
+/* =================================
+   MOBILE SERVICE CARD FLIP FIX
+================================= */
 
 @media (hover: none) {
 
+    /* Disable hover flip on touch devices */
     .service-card:hover .service-card-inner {
         transform: none;
     }
 
+    /* Flip card when tapped */
     .service-card.flipped .service-card-inner {
         transform: rotateY(180deg);
     }
 
+    /* Highlight flipped card */
+    .service-card.flipped .service-front,
+    .service-card.flipped .service-back {
+        border-color: #d45b91;
+    }
+
 }
+
