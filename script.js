@@ -330,7 +330,6 @@ document.getElementById("rithuPopup")?.addEventListener("click", function(event)
     if (event.target === this) {
         closeRithuDetails();
     }
-
 });
 /* =================================
    MOBILE SERVICE CARD FLIP
