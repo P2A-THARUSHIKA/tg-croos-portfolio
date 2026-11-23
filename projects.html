@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projects | TG CROOS</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar">
+
+            <a href="index.html" class="logo">TG CROOS<span>.</span></a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="projects.html" class="active">Projects</a></li>
+                <li><a href="education.html">Education</a></li>
+                <li><a href="learning.html">Learning</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+        </nav>
+    </header>
+
+
+    <!-- PROJECTS SECTION -->
+    <main class="projects-section">
+
+        <div class="projects-heading">
+
+            <span>MY WORK</span>
+
+            <h1>My Projects</h1>
+
+            <p>
+                A collection of projects that reflect my learning,
+                creativity and passion for software development.
+            </p>
+
+        </div>
+
+
+        <!-- PROJECT CARDS -->
+        <div class="projects-grid">
+
+
+            <!-- PROJECT 01 : RITHU MILK PRODUCTS -->
+            <article class="project-card">
+
+                <div class="project-number">01</div>
+
+                <div class="project-content">
+
+                    <span class="project-type">
+                        FULL-STACK WEB APPLICATION
+                    </span>
+
+                    <h2>Rithu Milk Products</h2>
+
+                    <p>
+                        A web-based business management and online ordering
+                        system developed for a milk products business.
+                        It includes product management, customer ordering
+                        and an admin order management system.
+                    </p>
+
+                    <div class="project-tech">
+                        <span>Java</span>
+                        <span>Spring Boot</span>
+                        <span>Thymeleaf</span>
+                        <span>Oracle DB</span>
+                        <span>HTML</span>
+                        <span>CSS</span>
+                    </div>
+
+                    <div class="project-status">
+                        Completed / Development Project
+                    </div>
+
+                    <button
+                        type="button"
+                        class="project-btn"
+                        onclick="showRithuDetails()">
+
+                        View Project Details →
+
+                    </button>
+
+                    <a
+                        href="https://github.com/P2A-THARUSHIKA/YogurtBusiness"
+                        class="project-btn"
+                        target="_blank"
+                        rel="noopener noreferrer">
+
+                        View on GitHub →
+
+                    </a>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- PROJECT 02 : MEDITRAIL -->
+            <article class="project-card">
+
+                <div class="project-number">02</div>
+
+                <div class="project-content">
+
+                    <span class="project-type">
+                        TEAM DEVELOPMENT PROJECT
+                    </span>
+
+                    <h2>medITrail</h2>
+
+                    <p>
+                        A team-based medical record management system
+                        developed as part of my software development studies.
+                        My responsibilities included creating an operation
+                        guide and implementing input validation features.
+                    </p>
+
+                    <div class="project-tech">
+                        <span>Java</span>
+                        <span>Spring Boot</span>
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>Oracle DB</span>
+                    </div>
+
+                    <div class="project-status">
+                        Team Project
+                    </div>
+
+                    <button
+                        type="button"
+                        class="project-btn"
+                        onclick="showMedITrailDetails()">
+
+                        View Project Details →
+
+                    </button>
+                    <a
+    href="https://github.com/P2A-HEIN/P2A_medITrail"
+    class="project-btn"
+    target="_blank"
+    rel="noopener noreferrer">
+
+    View on GitHub →
+
+</a>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- PROJECT 03 : ONLINE SHOPPING SYSTEM -->
+            <article class="project-card">
+
+                <div class="project-number">03</div>
+
+                <div class="project-content">
+
+                    <span class="project-type">
+                        UPCOMING PROJECT
+                    </span>
+
+                    <h2>Online Shopping System</h2>
+
+                    <p>
+                        An upcoming project focused on developing
+                        an online shopping platform with product
+                        browsing, customer accounts and order management.
+                    </p>
+
+                    <div class="project-tech">
+                        <span>Java</span>
+                        <span>Spring Boot</span>
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>Database</span>
+                    </div>
+
+                    <div class="project-status">
+                        Planned
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- PROJECT 04 : HOTEL MANAGEMENT WEBSITE -->
+            <article class="project-card">
+
+                <div class="project-number">04</div>
+
+                <div class="project-content">
+
+                    <span class="project-type">
+                        WEB DEVELOPMENT PROJECT
+                    </span>
+
+                    <h2>Hotel Management Website</h2>
+
+                    <p>
+                        A hotel website currently under development.
+                        The project focuses on presenting hotel information,
+                        displaying room details and introducing online booking features.
+                    </p>
+
+                    <div class="project-tech">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                    </div>
+
+                    <div class="project-status">
+                        In Progress
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+
+        <!-- RITHU MILK PRODUCTS POPUP -->
+        <div class="project-popup" id="rithuPopup">
+
+            <div class="project-popup-content">
+
+                <button
+                    type="button"
+                    class="popup-close"
+                    onclick="closeRithuDetails()">
+
+                    ×
+
+                </button>
+
+                <span class="project-type">
+                    FULL-STACK WEB APPLICATION
+                </span>
+
+                <h2>Rithu Milk Products</h2>
+
+                <p>
+                    A full-stack web application developed for a milk products
+                    business to manage products, customer orders and administrative
+                    operations through an online platform.
+                </p>
+
+
+                <h3>Project Features</h3>
+
+                <ul>
+                    <li>Product browsing and flavour selection.</li>
+                    <li>Customer registration and online ordering.</li>
+                    <li>Admin product and order management.</li>
+                    <li>Bank deposit receipt upload.</li>
+                    <li>Payment receipt verification by the admin.</li>
+                    <li>Order approval after payment verification.</li>
+                    <li>Receipt resubmission when verification fails.</li>
+                </ul>
+
+
+                <h3>Technologies Used</h3>
+
+                <div class="project-tech">
+                    <span>Java</span>
+                    <span>Spring Boot</span>
+                    <span>Thymeleaf</span>
+                    <span>Oracle DB</span>
+                    <span>HTML</span>
+                    <span>CSS</span>
+                </div>
+
+
+                <a
+                    href="https://github.com/P2A-THARUSHIKA/YogurtBusiness"
+                    class="project-btn"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    View on GitHub →
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MEDITRAIL POPUP -->
+        <div class="project-popup" id="medITrailPopup">
+
+            <div class="project-popup-content">
+
+                <button
+                    type="button"
+                    class="popup-close"
+                    onclick="closeMedITrailDetails()">
+
+                    ×
+
+                </button>
+
+                <span class="project-type">
+                    TEAM DEVELOPMENT PROJECT
+                </span>
+
+                <h2>medITrail</h2>
+
+                <p>
+                    A team-based medical record management system
+                    developed as part of my software development studies.
+                </p>
+
+
+                <h3>My Contributions</h3>
+
+                <ul>
+                    <li>Created the basic operation guide.</li>
+                    <li>Implemented input validation features.</li>
+                    <li>Collaborated with the development team.</li>
+                </ul>
+
+
+                <h3>Technologies Used</h3>
+
+                <div class="project-tech">
+                    <span>Java</span>
+                    <span>Spring Boot</span>
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>Oracle DB</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <h2>TG CROOS<span>.</span></h2>
+
+                <p>Building ideas into digital solutions.</p>
+
+                <p>
+                    Aspiring System Developer | Technology Enthusiast
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h3>Quick Links</h3>
+
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="skills.html">Skills</a>
+                <a href="projects.html">Projects</a>
+                <a href="education.html">Education</a>
+                <a href="learning.html">Learning</a>
+                <a href="contact.html">Contact</a>
+
+            </div>
+
+
+            <div class="footer-contact">
+
+                <h3>Connect With Me</h3>
+
+                <a href="mailto:tgimhani88@gmail.com">
+                    Email Me
+                </a>
+
+                <a
+                    href="https://github.com/P2A-THARUSHIKA"
+                    target="_blank">
+                    GitHub
+                </a>
+
+                <a
+                    href="https://www.linkedin.com/in/tharushika-gimhani-279110413/"
+                    target="_blank">
+                    LinkedIn
+                </a>
+
+                <a
+                    href="https://wa.me/819098455620"
+                    target="_blank">
+                    WhatsApp
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>© 2026 TG CROOS. All Rights Reserved.</p>
+
+            <p>Designed & Developed by TG CROOS.</p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
