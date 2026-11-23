@@ -2066,3 +2066,48 @@ footer {
         -webkit-transform: rotateY(180deg) !important;
     }
 }
+/* ===== IPHONE SAFARI SERVICE FLIP FIX ===== */
+
+.service-card {
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    cursor: pointer;
+}
+
+.service-card-inner {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+    -webkit-transition: -webkit-transform 0.8s ease;
+}
+
+.service-front,
+.service-back {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.service-back {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+}
+
+.service-card.flipped .service-card-inner {
+    transform: rotateY(180deg) !important;
+    -webkit-transform: rotateY(180deg) !important;
+}
+
+/* Prevent hover conflict on touch devices */
+@media (hover: none), (pointer: coarse) {
+
+    .service-card:hover .service-card-inner {
+        transform: none;
+        -webkit-transform: none;
+    }
+
+    .service-card.flipped .service-card-inner {
+        transform: rotateY(180deg) !important;
+        -webkit-transform: rotateY(180deg) !important;
+    }
+
+}
