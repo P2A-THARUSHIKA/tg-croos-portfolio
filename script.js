@@ -262,11 +262,12 @@ if (canvas) {
 
     requestAnimationFrame(animate);
 }
-(function () {
+// Initialize EmailJS safely
+if (typeof emailjs !== "undefined") {
     emailjs.init({
         publicKey: "eoHln2FDngGvtBJnq",
     });
-})();
+}
 
 const contactForm = document.querySelector(".contact-form form");
 
