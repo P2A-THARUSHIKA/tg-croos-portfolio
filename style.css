@@ -2018,26 +2018,51 @@ footer {
         align-items: flex-start;
     }
 }
-/* =================================
-   MOBILE SERVICE CARD FLIP FIX
-================================= */
+/* ===== MOBILE SERVICE CARD FLIP FIX ===== */
 
-@media (hover: none) {
+.service-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transition: transform 0.7s ease;
+    -webkit-transition: -webkit-transform 0.7s ease;
+}
 
-    /* Disable hover flip on touch devices */
+.service-front,
+.service-back {
+    position: absolute;
+    inset: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.service-back {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
     .service-card:hover .service-card-inner {
-        transform: none;
-    }
-
-    /* Flip card when tapped */
-    .service-card.flipped .service-card-inner {
         transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .service-card {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    /* Highlight flipped card */
-    .service-card.flipped .service-front,
-    .service-card.flipped .service-back {
-        border-color: #d45b91;
+    .service-card:hover .service-card-inner {
+        transform: none !important;
+        -webkit-transform: none !important;
     }
 
+    .service-card.flipped .service-card-inner {
+        transform: rotateY(180deg) !important;
+        -webkit-transform: rotateY(180deg) !important;
+    }
 }

@@ -331,22 +331,21 @@ document.getElementById("rithuPopup")?.addEventListener("click", function(event)
         closeRithuDetails();
     }
 });
-/* =================================
-   MOBILE SERVICE CARD FLIP
-================================= */
+// ===== MOBILE SERVICE CARD FLIP =====
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-    const serviceCards = document.querySelectorAll('.service-card');
+    const serviceCards = document.querySelectorAll(".service-card");
 
     serviceCards.forEach(function (card) {
 
-        card.addEventListener('click', function () {
+        card.addEventListener("click", function () {
 
-            if (window.matchMedia('(hover: none)').matches) {
-
-                card.classList.toggle('flipped');
-
+            if (
+                window.matchMedia("(hover: none)").matches ||
+                window.matchMedia("(pointer: coarse)").matches
+            ) {
+                card.classList.toggle("flipped");
             }
 
         });
