@@ -330,4 +330,18 @@ document.getElementById("rithuPopup")?.addEventListener("click", function(event)
     if (event.target === this) {
         closeRithuDetails();
     }
+
+});
+// Mobile Service Card Flip
+
+document.querySelectorAll('.service-card').forEach(card => {
+
+    card.addEventListener('click', () => {
+
+        if (window.matchMedia('(hover: none)').matches) {
+            card.classList.toggle('flipped');
+        }
+
+    });
+
 });
