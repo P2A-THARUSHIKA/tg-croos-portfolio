@@ -1,4 +1,3 @@
-
 // ======================================
 // TG CROOS PARTICLE TRANSFORMATION
 // iPhone & Mobile Optimized
@@ -59,19 +58,25 @@ if (canvas) {
             particles.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
+
                 sphere: randomSpherePoint(),
+
                 text: { x: 0, y: 0 },
+
                 blastX: 0,
                 blastY: 0,
-                size: Math.random() * 1.5 + 1,
-                speed: Math.random() * 2 + 1
+
+                size: Math.random() * 1.5 + 1
             });
         }
 
         createTextTargets();
     }
 
-    // CLEAR AND LARGE TG CROOS TEXT
+    // ======================================
+    // CREATE TG CROOS TEXT PARTICLES
+    // ======================================
+
     function createTextTargets() {
         const offCanvas = document.createElement("canvas");
         const offCtx = offCanvas.getContext("2d");
@@ -79,19 +84,34 @@ if (canvas) {
         offCanvas.width = Math.ceil(width);
         offCanvas.height = Math.ceil(height);
 
-        let fontSize = Math.min(width * 0.19, height * 0.38, 100);
+        let fontSize = Math.min(width * 0.20, 95);
 
-        fontSize = Math.max(fontSize, 20);
+        offCtx.font = `900 ${fontSize}px Arial, sans-serif`;
+
+        // Make sure text fits inside canvas
+        const maxTextWidth = width * 0.90;
+        const measuredWidth = offCtx.measureText("TG CROOS").width;
+
+        if (measuredWidth > maxTextWidth) {
+            fontSize *= maxTextWidth / measuredWidth;
+        }
 
         offCtx.font = `900 ${fontSize}px Arial, sans-serif`;
         offCtx.textAlign = "center";
         offCtx.textBaseline = "middle";
         offCtx.fillStyle = "#ffffff";
 
-        offCtx.fillText("TG CROOS", width / 2, height / 2);
+        offCtx.fillText(
+            "TG CROOS",
+            width / 2,
+            height / 2
+        );
 
         const imageData = offCtx.getImageData(
-            0, 0, offCanvas.width, offCanvas.height
+            0,
+            0,
+            offCanvas.width,
+            offCanvas.height
         );
 
         const points = [];
@@ -106,12 +126,14 @@ if (canvas) {
             }
         }
 
-        // Shuffle target positions
+        // Shuffle text points
         for (let i = points.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
+
             [points[i], points[j]] = [points[j], points[i]];
         }
 
+        // Assign points to particles
         particles.forEach((particle, i) => {
             if (points.length > 0) {
                 particle.text = points[i % points.length];
@@ -119,9 +141,17 @@ if (canvas) {
         });
     }
 
+    // ======================================
+    // ANIMATION EASING
+    // ======================================
+
     function ease(t) {
         return t * t * (3 - 2 * t);
     }
+
+    // ======================================
+    // 3D ROTATING SPHERE
+    // ======================================
 
     function drawSphere(particle, time) {
         const rotation = time * 0.001;
@@ -135,30 +165,52 @@ if (canvas) {
             particle.sphere.z * Math.cos(rotation);
 
         const scale = Math.min(width, height) * 0.30;
+
         const perspective = 1 / (2 - z * 0.5);
 
         return {
             x: width / 2 + x * scale * perspective,
-            y: height / 2 + particle.sphere.y * scale * perspective,
+
+            y: height / 2 +
+                particle.sphere.y * scale * perspective,
+
             alpha: (z + 1.5) / 2.5
         };
     }
+
+    // ======================================
+    // MAIN ANIMATION
+    // ======================================
 
     function animate(time) {
         ctx.clearRect(0, 0, width, height);
 
         let elapsed = time - phaseStart;
-        let progress = Math.min(elapsed / durations[phase], 1);
 
+        let progress = Math.min(
+            elapsed / durations[phase],
+            1
+        );
+
+        const eased = ease(progress);
+
+        // PHASE TRANSITIONS
         if (progress >= 1) {
+
             if (phase === "formation") {
                 phase = "rotation";
-            } else if (phase === "rotation") {
+            }
+
+            else if (phase === "rotation") {
                 phase = "text";
-            } else if (phase === "text") {
+            }
+
+            else if (phase === "text") {
+
                 phase = "explosion";
 
                 particles.forEach(p => {
+
                     const angle = Math.atan2(
                         p.y - height / 2,
                         p.x - width / 2
@@ -168,25 +220,33 @@ if (canvas) {
 
                     p.blastX = Math.cos(angle) * speed;
                     p.blastY = Math.sin(angle) * speed;
-                });
 
-            } else {
+                });
+            }
+
+            else {
+
                 phase = "formation";
 
                 particles.forEach(p => {
                     p.x = Math.random() * width;
                     p.y = Math.random() * height;
                 });
+
             }
 
             phaseStart = time;
+            elapsed = 0;
             progress = 0;
         }
 
+        // DRAW PARTICLES
         particles.forEach(p => {
+
             let alpha = 1;
 
             if (phase === "formation") {
+
                 const target = drawSphere(p, time);
 
                 p.x += (target.x - p.x) * 0.035;
@@ -194,7 +254,10 @@ if (canvas) {
 
                 alpha = target.alpha;
 
-            } else if (phase === "rotation") {
+            }
+
+            else if (phase === "rotation") {
+
                 const target = drawSphere(p, time);
 
                 p.x = target.x;
@@ -202,13 +265,19 @@ if (canvas) {
 
                 alpha = target.alpha;
 
-            } else if (phase === "text") {
-                p.x += (p.text.x - p.x) * 0.065;
-                p.y += (p.text.y - p.y) * 0.065;
+            }
+
+            else if (phase === "text") {
+
+                p.x += (p.text.x - p.x) * 0.12;
+                p.y += (p.text.y - p.y) * 0.12;
 
                 alpha = 1;
 
-            } else if (phase === "explosion") {
+            }
+
+            else if (phase === "explosion") {
+
                 p.x += p.blastX;
                 p.y += p.blastY;
 
@@ -216,6 +285,7 @@ if (canvas) {
                 p.blastY *= 0.985;
 
                 alpha = Math.max(0, 1 - progress);
+
             }
 
             ctx.beginPath();
@@ -228,7 +298,8 @@ if (canvas) {
                 Math.PI * 2
             );
 
-            ctx.fillStyle = `rgba(210, 160, 255, ${alpha})`;
+            ctx.fillStyle =
+                `rgba(210, 160, 255, ${alpha})`;
 
             ctx.shadowBlur = 10;
             ctx.shadowColor = "#b45cff";
@@ -236,31 +307,56 @@ if (canvas) {
             ctx.fill();
 
             ctx.shadowBlur = 0;
+
         });
 
         requestAnimationFrame(animate);
     }
 
+    // START ANIMATION
     window.addEventListener("resize", resizeCanvas);
 
     resizeCanvas();
 
     requestAnimationFrame(animate);
 }
-// Initialize EmailJS safely
+
+
+// ======================================
+// EMAILJS INITIALIZATION
+// ======================================
+
 if (typeof emailjs !== "undefined") {
+
     emailjs.init({
-        publicKey: "eoHln2FDngGvtBJnq",
+        publicKey: "eoHln2FDngGvtBJnq"
     });
+
 }
+
+
+// ======================================
+// CONTACT FORM
+// ======================================
 
 const contactForm = document.querySelector(".contact-form form");
 
 if (contactForm) {
+
     contactForm.addEventListener("submit", function (event) {
+
         event.preventDefault();
 
-        const submitButton = contactForm.querySelector("button[type='submit']");
+        const submitButton = contactForm.querySelector(
+            "button[type='submit']"
+        );
+
+        if (!submitButton) return;
+
+        if (typeof emailjs === "undefined") {
+            alert("Email service is currently unavailable.");
+            return;
+        }
 
         submitButton.disabled = true;
         submitButton.textContent = "Sending...";
@@ -269,69 +365,114 @@ if (contactForm) {
             "service_0db2zfr",
             "template_ab9ecas",
             contactForm
-        ).then(function () {
-            document.getElementById("successPopup").classList.add("active");
+        )
+
+        .then(function () {
+
+            document.getElementById("successPopup")
+                ?.classList.add("active");
+
             contactForm.reset();
-        }).catch(function (error) {
+
+        })
+
+        .catch(function (error) {
+
             console.error("EmailJS Error:", error);
+
             alert("Message could not be sent. Please try again.");
-        }).finally(function () {
+
+        })
+
+        .finally(function () {
+
             submitButton.disabled = false;
             submitButton.textContent = "Send Message";
+
         });
+
     });
-}
-function closeSuccessPopup() {
-    document.getElementById("successPopup").classList.remove("active");
+
 }
 
-// medITrail Popup Functions
+
+// ======================================
+// SUCCESS POPUP
+// ======================================
+
+function closeSuccessPopup() {
+
+    document.getElementById("successPopup")
+        ?.classList.remove("active");
+
+}
+
+
+// ======================================
+// medITrail POPUP
+// ======================================
 
 function showMedITrailDetails() {
-    document.getElementById("medITrailPopup").classList.add("active");
+
+    document.getElementById("medITrailPopup")
+        ?.classList.add("active");
+
 }
 
 function closeMedITrailDetails() {
-    document.getElementById("medITrailPopup").classList.remove("active");
+
+    document.getElementById("medITrailPopup")
+        ?.classList.remove("active");
+
 }
 
-// Close popup when clicking outside
-document.getElementById("medITrailPopup")?.addEventListener("click", function(event) {
-    if (event.target === this) {
-        closeMedITrailDetails();
-    }
-});
-// Rithu Milk Products Popup Functions
+document.getElementById("medITrailPopup")
+    ?.addEventListener("click", function (event) {
+
+        if (event.target === this) {
+            closeMedITrailDetails();
+        }
+
+    });
+
+
+// ======================================
+// RITHU MILK PRODUCTS POPUP
+// ======================================
 
 function showRithuDetails() {
-    document.getElementById("rithuPopup").classList.add("active");
+
+    document.getElementById("rithuPopup")
+        ?.classList.add("active");
+
 }
 
 function closeRithuDetails() {
-    document.getElementById("rithuPopup").classList.remove("active");
+
+    document.getElementById("rithuPopup")
+        ?.classList.remove("active");
+
 }
 
-// Close popup when clicking outside
-document.getElementById("rithuPopup")?.addEventListener("click", function(event) {
-    if (event.target === this) {
-        closeRithuDetails();
-    }
-});
-// ===== SERVICE CARD FLIP - IPHONE & MOBILE FIX =====
+document.getElementById("rithuPopup")
+    ?.addEventListener("click", function (event) {
 
-document.addEventListener("DOMContentLoaded", function () {
+        if (event.target === this) {
+            closeRithuDetails();
+        }
 
-    const cards = document.querySelectorAll(".service-card");
+    });
 
-    cards.forEach(function (card) {
 
-        card.addEventListener("click", function (event) {
+// ======================================
+// MOBILE SERVICE CARD FLIP
+// ======================================
 
-            event.preventDefault();
+document.querySelectorAll(".service-card").forEach(card => {
 
-            card.classList.toggle("flipped");
+    card.addEventListener("click", function () {
 
-        });
+        card.classList.toggle("flipped");
 
     });
 
