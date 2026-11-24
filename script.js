@@ -1,5 +1,7 @@
+
 // ======================================
 // TG CROOS PARTICLE TRANSFORMATION
+// iPhone & Mobile Optimized
 // ======================================
 
 const canvas = document.getElementById("croosCanvas");
@@ -10,7 +12,7 @@ if (canvas) {
     let width, height;
     let particles = [];
 
-    const particleCount = 850;
+    const particleCount = 1200;
 
     let phase = "formation";
     let phaseStart = performance.now();
@@ -18,20 +20,20 @@ if (canvas) {
     const durations = {
         formation: 2500,
         rotation: 3000,
-        text: 2500,
+        text: 4000,
         explosion: 2200
     };
 
     function resizeCanvas() {
         const rect = canvas.parentElement.getBoundingClientRect();
 
-        width = rect.width;
-        height = rect.height;
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
 
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
@@ -41,7 +43,6 @@ if (canvas) {
     function randomSpherePoint() {
         const u = Math.random() * 2 - 1;
         const theta = Math.random() * Math.PI * 2;
-
         const radius = Math.sqrt(1 - u * u);
 
         return {
@@ -55,21 +56,14 @@ if (canvas) {
         particles = [];
 
         for (let i = 0; i < particleCount; i++) {
-            const sphere = randomSpherePoint();
-
             particles.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
-
-                sphere: sphere,
-
+                sphere: randomSpherePoint(),
                 text: { x: 0, y: 0 },
-
                 blastX: 0,
                 blastY: 0,
-
-                size: Math.random() * 2 + 1,
-
+                size: Math.random() * 1.5 + 1,
                 speed: Math.random() * 2 + 1
             });
         }
@@ -77,51 +71,51 @@ if (canvas) {
         createTextTargets();
     }
 
+    // CLEAR AND LARGE TG CROOS TEXT
     function createTextTargets() {
         const offCanvas = document.createElement("canvas");
         const offCtx = offCanvas.getContext("2d");
 
-        offCanvas.width = width;
-        offCanvas.height = height;
+        offCanvas.width = Math.ceil(width);
+        offCanvas.height = Math.ceil(height);
 
-        let fontSize = Math.min(width * 0.14, 110);
+        let fontSize = Math.min(width * 0.19, height * 0.38, 100);
 
-        offCtx.font = `bold ${fontSize}px Arial`;
+        fontSize = Math.max(fontSize, 20);
+
+        offCtx.font = `900 ${fontSize}px Arial, sans-serif`;
         offCtx.textAlign = "center";
         offCtx.textBaseline = "middle";
+        offCtx.fillStyle = "#ffffff";
 
-        offCtx.fillStyle = "white";
-
-        offCtx.fillText(
-            "TG CROOS",
-            width / 2,
-            height / 2
-        );
+        offCtx.fillText("TG CROOS", width / 2, height / 2);
 
         const imageData = offCtx.getImageData(
-            0, 0, width, height
+            0, 0, offCanvas.width, offCanvas.height
         );
 
         const points = [];
 
-        for (let y = 0; y < height; y += 3) {
-            for (let x = 0; x < width; x += 3) {
-                const index = (y * width + x) * 4;
+        for (let y = 0; y < offCanvas.height; y += 2) {
+            for (let x = 0; x < offCanvas.width; x += 2) {
+                const index = (y * offCanvas.width + x) * 4;
 
-                if (imageData.data[index + 3] > 128) {
+                if (imageData.data[index + 3] > 100) {
                     points.push({ x, y });
                 }
             }
         }
 
+        // Shuffle target positions
         for (let i = points.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-
             [points[i], points[j]] = [points[j], points[i]];
         }
 
         particles.forEach((particle, i) => {
-            particle.text = points[i % points.length];
+            if (points.length > 0) {
+                particle.text = points[i % points.length];
+            }
         });
     }
 
@@ -132,14 +126,15 @@ if (canvas) {
     function drawSphere(particle, time) {
         const rotation = time * 0.001;
 
-        const x = particle.sphere.x * Math.cos(rotation)
-            - particle.sphere.z * Math.sin(rotation);
+        const x =
+            particle.sphere.x * Math.cos(rotation) -
+            particle.sphere.z * Math.sin(rotation);
 
-        const z = particle.sphere.x * Math.sin(rotation)
-            + particle.sphere.z * Math.cos(rotation);
+        const z =
+            particle.sphere.x * Math.sin(rotation) +
+            particle.sphere.z * Math.cos(rotation);
 
         const scale = Math.min(width, height) * 0.30;
-
         const perspective = 1 / (2 - z * 0.5);
 
         return {
@@ -154,8 +149,6 @@ if (canvas) {
 
         let elapsed = time - phaseStart;
         let progress = Math.min(elapsed / durations[phase], 1);
-
-        const eased = ease(progress);
 
         if (progress >= 1) {
             if (phase === "formation") {
@@ -187,17 +180,14 @@ if (canvas) {
             }
 
             phaseStart = time;
-            elapsed = 0;
             progress = 0;
         }
 
         particles.forEach(p => {
-
-            let target;
             let alpha = 1;
 
             if (phase === "formation") {
-                target = drawSphere(p, time);
+                const target = drawSphere(p, time);
 
                 p.x += (target.x - p.x) * 0.035;
                 p.y += (target.y - p.y) * 0.035;
@@ -205,8 +195,7 @@ if (canvas) {
                 alpha = target.alpha;
 
             } else if (phase === "rotation") {
-
-                target = drawSphere(p, time);
+                const target = drawSphere(p, time);
 
                 p.x = target.x;
                 p.y = target.y;
@@ -214,23 +203,19 @@ if (canvas) {
                 alpha = target.alpha;
 
             } else if (phase === "text") {
+                p.x += (p.text.x - p.x) * 0.065;
+                p.y += (p.text.y - p.y) * 0.065;
 
-                target = p.text;
-
-                const sphere = drawSphere(p, time);
-
-                p.x += (target.x - p.x) * 0.045;
-                p.y += (target.y - p.y) * 0.045;
+                alpha = 1;
 
             } else if (phase === "explosion") {
-
                 p.x += p.blastX;
                 p.y += p.blastY;
 
                 p.blastX *= 0.985;
                 p.blastY *= 0.985;
 
-                alpha = 1 - progress;
+                alpha = Math.max(0, 1 - progress);
             }
 
             ctx.beginPath();
@@ -245,7 +230,7 @@ if (canvas) {
 
             ctx.fillStyle = `rgba(210, 160, 255, ${alpha})`;
 
-            ctx.shadowBlur = 12;
+            ctx.shadowBlur = 10;
             ctx.shadowColor = "#b45cff";
 
             ctx.fill();
